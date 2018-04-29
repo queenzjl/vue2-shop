@@ -14,24 +14,24 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
-const app = express();
-const router = express.Router();
-const goodsData = require('./../mock/goods.json');
-router.get("/goods", function(req, res, next) {
-        res.json(goodsData)
-    })
-    // 跨域支持
-app.all('*', (req, res, next) => {
-    const origin = req.headers.origin;
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS, DELETE');
+    /* const app = express();
+    const router = express.Router();
+    const goodsData = require('./../mock/goods.json');
+    router.get("/goods", function(req, res, next) {
+            res.json(goodsData)
+        })
+        // 跨域支持
+    app.all('*', (req, res, next) => {
+        const origin = req.headers.origin;
+        res.header('Access-Control-Allow-Origin', origin);
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
+        res.header('Access-Control-Allow-Credentials', true);
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS, DELETE');
 
-    next();
-});
-app.use(router);
-var server = app.listen(8081)
+        next();
+    });
+    app.use(router);
+    var server = app.listen(8081) */
 const devWebpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })

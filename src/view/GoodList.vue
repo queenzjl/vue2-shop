@@ -103,10 +103,10 @@ export default {
     },
     methods: {
         getGoodsList: function(){
-            axios.get('http://localhost:8081/goods').then( (res) => {
+            axios.get('/goods').then( (res) => {
                 console.log(res)
-                var res = res.data;
-                this.goodsList = res.result;
+                var res = res.data.result;
+                this.goodsList = res.list;
             })
         },
         setPriceFilter(index){
