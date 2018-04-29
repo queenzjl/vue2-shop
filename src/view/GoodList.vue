@@ -6,8 +6,8 @@
             <div class="container">
                 <div class="filter-nav">
                     <span class="sortby">排序:</span>
-                    <a href="javascript:void(0)" class="default cur">默认</a>
-                    <a href="javascript:void(0)" class="price">价格 <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+                    <a href="javascript:void(0)" class="default" :class="{'cur':sortActive}" @click="defaultSort()">默认</a>
+                    <a href="javascript:void(0)" class="price" v-bind:class="{'sort-up': sortFlag, 'cur':!sortActive}" @click="sortGoods()">价格 <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
                     <a href="javascript:void(0)" class="filterby" @click.stop="showFilterPop()">筛选</a>
                 </div>
                 <div class="accessory-result">
@@ -64,7 +64,7 @@ export default {
             goodsList: [],
             page: 1,    //分页 默认为第1页
             pageSize: 8,//一页展示8条数据
-            sortFlag: 1,//排序
+            sortFlag: true,//排序,true为升序
             priceFilter: [
                 {
                     startPrice:'0.00',
@@ -93,7 +93,8 @@ export default {
             ],
             priceChecked: 'all',
             filterBy: false,
-            overLayFlag: false
+            overLayFlag: false,
+            sortActive: true
         }
     },
     mounted(){
@@ -109,7 +110,7 @@ export default {
             var param = {
                 page: this.page,
                 pageSize: this.pageSize,
-                sort: this.sortFlag
+                sort: this.sortFlag ? 1: -1
             }
             axios.get('/goods',{
                 params: param   //传递的参数，自动做了编码处理
@@ -119,14 +120,31 @@ export default {
                 this.goodsList = res.list;
             })
         },
+        //默认排序
+        defaultSort(){
+            this.sortFlag = true;
+            this.page = 1;
+            this.getGoodsList();
+            this.sortActive = true;
+        },
+        //价格排序
+        sortGoods(){
+            this.sortFlag = !this.sortFlag;
+            this.page = 1;
+            this.getGoodsList();
+            this.sortActive = false;
+        },
+        //设置选中价格区间样式
         setPriceFilter(index){
             console.log(index)
             this.priceChecked = index;
         },
+        //筛选功能，显示弹出层
         showFilterPop(){
             this.filterBy = true;
             this.overLayFlag = true;
         },
+        //关闭弹出层
         closePop(){
             this.filterBy = false;
             this.overLayFlag = false;
