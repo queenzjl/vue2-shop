@@ -118,7 +118,8 @@ export default {
             var param = {
                 page: this.page,
                 pageSize: this.pageSize,
-                sort: this.sortFlag ? 1: -1
+                sort: this.sortFlag ? 1: -1,
+                priceLevel: this.priceChecked
             }
             axios.get('/goods',{
                 params: param   //传递的参数，自动做了编码处理
@@ -168,10 +169,12 @@ export default {
             this.getGoodsList();
             this.sortActive = false;
         },
-        //设置选中价格区间样式
+        //设置选中价格，发送数据请求
         setPriceFilter(index){
             console.log(index)
             this.priceChecked = index;
+            this.page = 1;
+            this.getGoodsList();
         },
         //筛选功能，显示弹出层
         showFilterPop(){
