@@ -20,6 +20,16 @@ app.use(express.urlencoded({ extended: false })); //url的编码方式
 app.use(cookieParser()); //请求cookie
 app.use(express.static(path.join(__dirname, 'public'))); //公共资源路径
 
+/* //cors跨域服务端配置
+app.all('*', (req, res, next) => {
+    const origin = req.headers.origin;
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS, DELETE');
+
+    next();
+}); */
 app.use('/', indexRouter);
 app.use('/goods', goodsRouter);
 
