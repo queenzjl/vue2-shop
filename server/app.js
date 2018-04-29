@@ -14,11 +14,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev')); //日志中间件
+app.use(express.json()); //解析json数据
+app.use(express.urlencoded({ extended: false })); //url的编码方式
+app.use(cookieParser()); //请求cookie
+app.use(express.static(path.join(__dirname, 'public'))); //公共资源路径
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
