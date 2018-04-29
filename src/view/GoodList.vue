@@ -40,6 +40,12 @@
                                 </li>
                             </ul>
                         </div>
+                         <div class="view-more-normal"
+                             v-infinite-scroll="loadMore"
+                             infinite-scroll-disabled="busy"
+                             infinite-scroll-distance="20">
+                            <img src="./../../static/loading-svg/loading-spinning-bubbles.svg" v-show="loading">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,8 +99,10 @@ export default {
             ],
             priceChecked: 'all',
             filterBy: false,
-            overLayFlag: false,
-            sortActive: true
+            overLayFlag: false, //默认不显示蒙版层
+            sortActive: true,
+            loading: true,  //正在加载
+            busy: true  //
         }
     },
     mounted(){
@@ -106,7 +114,7 @@ export default {
         NavBread
     },
     methods: {
-        getGoodsList: function(){
+        getGoodsList: function(flag){
             var param = {
                 page: this.page,
                 pageSize: this.pageSize,
@@ -116,9 +124,35 @@ export default {
                 params: param   //传递的参数，自动做了编码处理
             }).then( (res) => {
                 console.log(res)
-                var res = res.data.result;
-                this.goodsList = res.list;
+                var res = res.data;
+                this.loading = false;
+                //成功
+                if(res.status == '0'){
+                    if(flag){
+                        this.goodsList = this.goodsList.concat(res.result.list);//如果是加载更多，则拼接数组
+                        if(res.result.count == 0){
+                            this.busy = true;
+                        }else{
+                            this.busy = false;
+                        }
+
+                    }else{
+                        this.goodsList = res.result.list;
+                        this.busy = false;
+                    }
+                }else{
+                    this.goodsList = [];
+                }
+                
             })
+        },
+        //加载更多
+        loadMore(){
+            this.loading = true;
+            setTimeout(() => {
+               this.page++;
+               this.getGoodsList(true) 
+            }, 500);
         },
         //默认排序
         defaultSort(){

@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueLazyLoad from 'vue-lazyload'
+import VueLazyLoad from 'vue-lazyload' //图片懒加载 插件
+import VueInfiniteScroll from 'vue-infinite-scroll' //滚动翻页插件
+
+Vue.use(VueInfiniteScroll)
 Vue.use(VueLazyLoad, {
     loading: 'static/loading-svg/loading-bars.svg',
     attempt: 3
