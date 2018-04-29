@@ -8,7 +8,7 @@
                     <span class="sortby">排序:</span>
                     <a href="javascript:void(0)" class="default cur">默认</a>
                     <a href="javascript:void(0)" class="price">价格 <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
-                    <a href="javascript:void(0)" class="filterby" @click="showFilterPop()">筛选</a>
+                    <a href="javascript:void(0)" class="filterby" @click.stop="showFilterPop()">筛选</a>
                 </div>
                 <div class="accessory-result">
                     <!-- filter -->
@@ -44,6 +44,7 @@
                 </div>
             </div>
         </div>
+        <div class="md-overlay" v-show="overLayFlag" @click.stop="closePop()"></div>
         <nav-footer></nav-footer>
   
     </div>
@@ -88,7 +89,8 @@ export default {
                 }
             ],
             priceChecked: 'all',
-            filterBy: false
+            filterBy: false,
+            overLayFlag: false
         }
     },
     mounted(){
@@ -113,6 +115,11 @@ export default {
         },
         showFilterPop(){
             this.filterBy = true;
+            this.overLayFlag = true;
+        },
+        closePop(){
+            this.filterBy = false;
+            this.overLayFlag = false;
         }
     }
 }
