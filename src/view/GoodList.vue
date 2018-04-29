@@ -62,6 +62,9 @@ export default {
     data () {
         return {
             goodsList: [],
+            page: 1,    //分页 默认为第1页
+            pageSize: 8,//一页展示8条数据
+            sortFlag: 1,//排序
             priceFilter: [
                 {
                     startPrice:'0.00',
@@ -103,7 +106,14 @@ export default {
     },
     methods: {
         getGoodsList: function(){
-            axios.get('/goods').then( (res) => {
+            var param = {
+                page: this.page,
+                pageSize: this.pageSize,
+                sort: this.sortFlag
+            }
+            axios.get('/goods',{
+                params: param   //传递的参数，自动做了编码处理
+            }).then( (res) => {
                 console.log(res)
                 var res = res.data.result;
                 this.goodsList = res.list;
