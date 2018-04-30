@@ -62,7 +62,9 @@
                             <li v-for="item in cartList">
                                 <div class="cart-tab-1">
                                     <div class="cart-item-check">
-                                        <a href="javascipt:;" class="checkbox-btn item-check-btn">
+                                        <a href="javascipt:;" class="checkbox-btn item-check-btn"
+                                        v-bind:class="{'check':item.checked=='1'}" 
+                                        @click="editCart('checked',item)">
                                             <svg class="icon icon-ok">
                                                 <use xlink:href="#icon-ok"></use>
                                             </svg>
@@ -90,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="cart-tab-4">
-                                    <div class="item-price-total">39990</div>
+                                    <div class="item-price-total">{{item.salePrice * item.productNum}}</div>
                                 </div>
                                 <div class="cart-tab-5">
                                     <div class="cart-item-opration">
@@ -119,7 +121,7 @@
                         </div>
                         <div class="cart-foot-r">
                             <div class="item-total">
-                                总价: <span class="total-price">39990</span>
+                                总价: <span class="total-price">{{totalPrice}}</span>
                             </div>
                             <div class="btn-wrap">
                                 <a class="btn btn--red">去结算</a>
@@ -183,12 +185,26 @@
             NavFooter,
             Modal
         },
+        computed:{
+            totalPrice(){
+                var money = 0;
+                this.cartList.forEach((item) => {
+                    if(item.checked == '1'){
+                        money += parseFloat(item.salePrice) * parseInt(item.productNum);
+                    }
+                })
+                return money;
+            }
+        },
         methods: {
             init(){
                 axios.get('/users/cartList').then( (res) => {
                     let data = res.data;
                     this.cartList = data.result;
                 })
+            },
+            editCart(flag,index){
+                index.checked = index.checked=="1"?'0':'1';
             }
         }
     }
