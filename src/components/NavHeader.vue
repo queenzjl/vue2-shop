@@ -34,8 +34,8 @@
                         <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">登录</a>
                         <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>登出</a>
                         <div class="navbar-cart-container">
-                            <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount"></span>
-                            <a class="navbar-link" href="/#/cart">
+                            <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount && showCart"></span>
+                            <a class="navbar-link" href="javascript:;" @click="turnCart()">
                                 <svg class="navbar-cart-logo">
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
                                 </svg>
@@ -72,6 +72,12 @@
                     </div>
                 </div>
             </div>
+            <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+                <p slot="message">请先登录，否则无法查看购物车!</p>
+                <div slot="btnGroup">
+                    <a href="javascript:;" class="btn btn--m" @click="mdShow=false">关闭</a>
+                </div>
+            </modal>
             <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
             </header>
     </div>
@@ -79,6 +85,7 @@
 <script>
     import './../assets/css/login.css'
     import axios from 'axios'
+    import Modal from './Modal'
     import {mapState, mapActions} from 'vuex'
     export default {
         data(){
@@ -87,6 +94,8 @@
                 errorTip: false, //错误提示
                 userName: 'admin',
                 userPwd: '123456',
+                showCart: false,
+                mdShow: false
             }
         },
         mounted(){
@@ -94,6 +103,9 @@
         },
         computed: {
             ...mapState(['nickName', 'cartCount'])
+        },
+        components:{
+            Modal
         },
         methods: {
             ...mapActions([
@@ -107,9 +119,10 @@
                         // this.nickName = res.result;
                         this.updateInfo(res.result.userName);
                         this.loginModalFlag = false;
+                        this.showCart = true;
                     }else{
                         if(this.$route.path!='/goods'){
-                            this.$route.push('/goods');
+                            this.$router.push('/goods');
                         }
                     }
                 });
@@ -138,8 +151,11 @@
             //登出
             logOut(){
                 axios.post('/users/logout').then( (res) => {
-                    var result = res;
-                    this.nickName  = '';
+                    var res = res.data;
+                    // this.nickName  = '';
+                    this.updateInfo(res.result.userName);
+                    this.updateCartCount(res.result);
+                    this.showCart = false;
                 })
             },
             //获取购物车商品数量
@@ -147,7 +163,19 @@
                 axios.get("users/getCartCount").then((res) => {
                     var res = res.data;
                     this.updateCartCount(res.result);
+                    this.showCart = true;
                 })
+            },
+            turnCart(){
+                if(this.nickName && this.showCart){
+                    this.$router.push('/cart');
+                }else{
+                    this.mdShow = true;
+                }
+            },
+            //关闭模态框
+            closeModal(){
+                this.mdShow = false;
             }
         }
     }
