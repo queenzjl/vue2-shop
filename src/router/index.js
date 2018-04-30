@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GoodList from '@/view/GoodList'
 import Cart from '@/view/Cart'
 import Address from '@/view/Address'
+import OrderConfirm from '@/view/OrderConfirm'
 
 Vue.use(Router)
 
@@ -26,6 +27,11 @@ export default new Router({
             path: '/address',
             name: 'Address',
             component: Address
+        },
+        {
+            path: '/orderConfirm',
+            name: 'OrderConfirm',
+            component: OrderConfirm
         }
     ]
 })
