@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import GoodList from '@/view/GoodList'
-import Cart from '@/view/Cart'
-import Address from '@/view/Address'
-import OrderConfirm from '@/view/OrderConfirm'
-import OrderSuccess from '@/view/OrderSuccess'
+const GoodList = r => require.ensure([], () => r(require('../view/GoodList')), 'GoodList')
+const Cart = r => require.ensure([], () => r(require('../view/Cart')), 'Cart')
+const Address = r => require.ensure([], () => r(require('../view/Address')), 'Address')
+const OrderConfirm = r => require.ensure([], () => r(require('../view/OrderConfirm')), 'OrderConfirm')
+const OrderSuccess = r => require.ensure([], () => r(require('../view/OrderSuccess')), 'OrderSuccess')
 
 Vue.use(Router)
 
