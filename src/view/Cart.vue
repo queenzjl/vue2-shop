@@ -2,6 +2,7 @@
     <div>
         <nav-header></nav-header>
         <nav-bread>
+            <span>购物车</span>
         </nav-bread>
         <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -58,7 +59,7 @@
                             </ul>
                         </div>
                         <ul class="cart-item-list">
-                            <li>
+                            <li v-for="item in cartList">
                                 <div class="cart-tab-1">
                                     <div class="cart-item-check">
                                         <a href="javascipt:;" class="checkbox-btn item-check-btn">
@@ -68,21 +69,21 @@
                                         </a>
                                     </div>
                                     <div class="cart-item-pic">
-                                        <img src="/static/1.jpg">
+                                        <img v-lazy="'/static/'+item.productImage" v-bind:alt="item.productName">
                                     </div>
                                     <div class="cart-item-title">
-                                        <div class="item-name">小米电视4 55英寸</div>
+                                        <div class="item-name">{{item.productName}}</div>
                                     </div>
                                 </div>
                                 <div class="cart-tab-2">
-                                    <div class="item-price">3999</div>
+                                    <div class="item-price">{{item.salePrice}}</div>
                                 </div>
                                 <div class="cart-tab-3">
                                     <div class="item-quantity">
                                         <div class="select-self select-self-open">
                                             <div class="select-self-area">
                                                 <a class="input-sub">-</a>
-                                                <span class="select-ipt">10</span>
+                                                <span class="select-ipt">{{item.productNum}}</span>
                                                 <a class="input-add">+</a>
                                             </div>
                                         </div>
@@ -174,6 +175,7 @@
             }
         },
         mounted(){
+            this.init();
         },
         components: {
             NavHeader,
@@ -182,6 +184,12 @@
             Modal
         },
         methods: {
+            init(){
+                axios.get('/users/cartList').then( (res) => {
+                    let data = res.data;
+                    this.cartList = data.result;
+                })
+            }
         }
     }
 </script>
