@@ -225,6 +225,7 @@ export default {
                 if(res.status==0){
                     // alert("加入成功");
                     this.mdShowCart = true;
+                    this.$store.commit("UPDATE_CART_COUNT", 1);
                 }else{
                     console.log('aaaa');
                     // alert("Error msg:" + res.msg );

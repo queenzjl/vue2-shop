@@ -34,7 +34,7 @@
                         <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">登录</a>
                         <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>登出</a>
                         <div class="navbar-cart-container">
-                            <span class="navbar-cart-count"></span>
+                            <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount"></span>
                             <a class="navbar-link" href="/#/cart">
                                 <svg class="navbar-cart-logo">
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -79,6 +79,7 @@
 <script>
     import './../assets/css/login.css'
     import axios from 'axios'
+    import {mapState, mapActions} from 'vuex'
     export default {
         data(){
             return {
@@ -86,21 +87,30 @@
                 errorTip: false, //错误提示
                 userName: 'admin',
                 userPwd: '123456',
-                nickName: ''
             }
         },
         mounted(){
             this.checkLogin();
         },
+        computed: {
+            ...mapState(['nickName', 'cartCount'])
+        },
         methods: {
+            ...mapActions([
+                'updateInfo', 'updateCartCount'
+            ]),
             checkLogin(){
                 axios.get("/users/checkLogin").then((response)=>{
                     var res = response.data;
+                    var path = this.$route.pathname;
                     if(res.status=="0"){
-                    this.nickName = res.result;
+                        // this.nickName = res.result;
+                        this.updateInfo(res.result.userName);
                         this.loginModalFlag = false;
                     }else{
-
+                        if(this.$route.path!='/goods'){
+                            this.$route.push('/goods');
+                        }
                     }
                 });
             },
@@ -117,16 +127,26 @@
                     if(res.status=="0"){
                         this.errorTip = false;
                         this.loginModalFlag = false;
-                        this.nickName = res.result.userName;
+                        // this.nickName = res.result.userName;
+                        this.updateInfo(res.result.userName);
+                        this.getCartCount();
                     }else{
                         this.errorTip = true;
                     }
                 });
             },
+            //登出
             logOut(){
                 axios.post('/users/logout').then( (res) => {
                     var result = res;
                     this.nickName  = '';
+                })
+            },
+            //获取购物车商品数量
+            getCartCount(){
+                axios.get("users/getCartCount").then((res) => {
+                    var res = res.data;
+                    this.updateCartCount(res.result);
                 })
             }
         }

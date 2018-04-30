@@ -248,8 +248,9 @@
                     checked: index.checked
                 }).then( (res) => {
                     let data = res.data;
-                    if(res.status == '0'){
+                    if(data.status == '0'){
                         console.log("update success");
+                        this.$store.commit("UPDATE_CART_COUNT", flag=="add"?1:-1);
                     }
                 })
             },
@@ -270,6 +271,7 @@
                     if(data.status == '0'){
                         this.modalConfirm = false;
                         var delCount = this.delItem.productNum;
+                        this.$store.commit("UPDATE_CART_COUNT",-delCount);
                         this.init();
                     }
                 })
