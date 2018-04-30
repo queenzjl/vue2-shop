@@ -124,7 +124,7 @@ export default {
             axios.get('/goods',{
                 params: param   //传递的参数，自动做了编码处理
             }).then( (res) => {
-                console.log(res)
+                // console.log(res)
                 var res = res.data;
                 this.loading = false;
                 //成功
@@ -171,7 +171,7 @@ export default {
         },
         //设置选中价格，发送数据请求
         setPriceFilter(index){
-            console.log(index)
+            // console.log(index)
             this.priceChecked = index;
             this.page = 1;
             this.getGoodsList();
@@ -191,7 +191,7 @@ export default {
             axios.post('/goods/addCart',{
                 productId: id
             }).then( (res) => {
-                console.log(res)
+                // console.log(res)
                 alert("加入成功")
             })
         }
