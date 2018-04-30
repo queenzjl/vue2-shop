@@ -121,7 +121,7 @@ export default {
                 sort: this.sortFlag ? 1: -1,
                 priceLevel: this.priceChecked
             }
-            axios.get('/goods',{
+            axios.get('/goods/list',{
                 params: param   //传递的参数，自动做了编码处理
             }).then( (res) => {
                 // console.log(res)

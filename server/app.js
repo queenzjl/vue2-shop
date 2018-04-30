@@ -22,6 +22,21 @@ app.use(cookieParser()); //请求cookie
 app.use(express.static(path.join(__dirname, 'public'))); //公共资源路径
 
 
+/* //cors跨域服务端配置
+app.all('*', (req, res, next) => {
+    const origin = req.headers.origin;
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS, DELETE');
+
+    next();
+}); */
+app.use('/', indexRouter);
+app.use('/goods', goodsRouter);
+app.use('/users', usersRouter);
+
+
 // 登录拦截
 app.use(function(req, res, next) {
     if (req.cookies.userId) {
@@ -39,20 +54,6 @@ app.use(function(req, res, next) {
         }
     }
 });
-
-/* //cors跨域服务端配置
-app.all('*', (req, res, next) => {
-    const origin = req.headers.origin;
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS, DELETE');
-
-    next();
-}); */
-app.use('/', indexRouter);
-app.use('/goods', goodsRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
