@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
@@ -16,8 +17,8 @@ app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 
 app.use(logger('dev')); //日志中间件
-app.use(express.json()); //解析json数据
-app.use(express.urlencoded({ extended: false })); //url的编码方式
+app.use(bodyParser.json()); //解析json数据
+app.use(bodyParser.urlencoded({ extended: false })); //url的编码方式
 app.use(cookieParser()); //请求cookie
 app.use(express.static(path.join(__dirname, 'public'))); //公共资源路径
 
@@ -32,10 +33,6 @@ app.all('*', (req, res, next) => {
 
     next();
 }); */
-app.use('/', indexRouter);
-app.use('/goods', goodsRouter);
-app.use('/users', usersRouter);
-
 
 // 登录拦截
 app.use(function(req, res, next) {
@@ -52,8 +49,15 @@ app.use(function(req, res, next) {
                 result: ''
             });
         }
+
     }
 });
+
+app.use('/', indexRouter);
+app.use('/goods', goodsRouter);
+app.use('/users', usersRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -187,13 +187,17 @@ export default {
             this.overLayFlag = false;
         },
         //加入购物车
-        addCart(id){
-            axios.post('/goods/addCart',{
-                productId: id
-            }).then( (res) => {
-                // console.log(res)
-                alert("加入成功")
-            })
+        addCart(productId){
+            axios.post("/goods/addCart",{
+                productId:productId
+            }).then((res)=>{
+                var res = res.data;
+                if(res.status==0){
+                    alert("加入成功");
+                }else{
+                    alert("Error msg:" + res.msg );
+                }
+            });
         }
     }
 }
