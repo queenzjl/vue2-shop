@@ -5,7 +5,9 @@ import App from './App'
 import router from './router'
 import VueLazyLoad from 'vue-lazyload' //图片懒加载 插件
 import VueInfiniteScroll from 'vue-infinite-scroll' //滚动翻页插件
+import Vuex from 'vuex'
 
+Vue.use(Vuex)
 Vue.use(VueInfiniteScroll)
 Vue.use(VueLazyLoad, {
     loading: 'static/loading-svg/loading-bars.svg',
