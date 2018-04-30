@@ -117,7 +117,7 @@
                     var path = this.$route.pathname;
                     if(res.status=="0"){
                         // this.nickName = res.result;
-                        this.updateInfo(res.result.userName);
+                        this.updateInfo(res.result);
                         this.loginModalFlag = false;
                         this.showCart = true;
                     }else{
