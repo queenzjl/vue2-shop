@@ -35,7 +35,7 @@
                         <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>登出</a>
                         <div class="navbar-cart-container">
                             <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount && showCart"></span>
-                            <a class="navbar-link" href="javascript:;" @click="turnCart()">
+                            <a class="navbar-link" href="javascript:;" @click="turnCart()" id="end">
                                 <svg class="navbar-cart-logo">
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
                                 </svg>

@@ -36,7 +36,7 @@
                                         <div class="name">{{item.productName}}</div>
                                         <div class="price">{{item.salePrice | currency('￥')}}</div>
                                         <div class="btn-area">
-                                            <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
+                                            <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId, $event)">加入购物车</a>
                                         </div>
                                     </div>
                                 </li>
@@ -84,6 +84,8 @@ import NavFooter from "./../components/NavFooter"
 import NavBread from "./../components/NavBread"
 import Modal from './../components/Modal'
 import {currency} from './../util/currency'
+import  '@/assets/js/jquery-3.3.1.js'
+import  '@/assets/js/fly.js'
 import axios from 'axios'
 export default {
     name: 'GoodList',
@@ -217,14 +219,38 @@ export default {
         },
         
         //加入购物车
-        addCart(productId){
+        addCart(productId, event){
+            var offset = $("#end").offset();
+            console.log(event)
+            var _this = this;
             axios.post("/goods/addCart",{
                 productId:productId
             }).then((res)=>{
                 var res = res.data;
                 if(res.status==0){
                     // alert("加入成功");
-                    this.mdShowCart = true;
+                    // this.mdShowCart = true;
+
+                    var flyer = $('<div class="u-flyer" style="width:20px;height:20px;background:#d1434a;border-radius:50%;"></div>'); 
+                    flyer.fly({
+                        start: {
+                            left: event.pageX,
+                            top: event.pageY
+                        },
+                        end: { 
+                            left: offset.left+10, //结束位置（必填） 
+                            top: offset.top+10, //结束位置（必填） 
+                            width: 0, //结束时宽度 
+                            height: 0 //结束时高度 
+                        }, 
+                        onEnd: function(){ //结束回调 
+                            // _this.mdShowCart = true;
+                             this.destory();
+                            /* addcar.css("cursor","default").removeClass('orange').unbind('click'); 
+                            this.destory(); //移除dom  */
+                        } 
+                    })
+
                     this.$store.commit("UPDATE_CART_COUNT", 1);
                 }else{
                     console.log('aaaa');
@@ -244,5 +270,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.u-flyer {
+    /* display: inline-block; */
+    width: 50px;
+    content: '';
+    height: 50px;
+    background: red;
+    border-radius: 50%;
+}
 </style>
